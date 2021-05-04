@@ -5,17 +5,15 @@ metadata_type: eo
 
 metadata:
   product_type: mangrove_extent_cover
-  statistics:
-    period: '1y'
   format:
-    name: NetCDF
+    name: GeoTIFF
   platform:
     code: LANDSAT_5,LANDSAT_7,LANDSAT_8
   instrument:
     name: TM,ETM+,OLI
 
 storage:
-  driver: NetCDF CF
+  driver: GeoTIFF
   crs: EPSG:3577
   tile_size:
     x: 100000.0
@@ -24,18 +22,18 @@ storage:
     x: 25
     y: -25
   chunking:
-    x: 200
-    y: 200
+    x: 512
+    y: 512
     time: 1
   dimension_order: [time, y, x]
 
 measurements:
   - name: extent
     dtype: int16
-    nodata: 0
+    nodata: -1
     units: '1'
 
   - name: canopy_cover_class
     dtype: int16
-    nodata: 0
+    nodata: -1
     units: '1'

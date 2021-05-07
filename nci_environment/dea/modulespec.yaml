@@ -22,8 +22,19 @@ copy_files:
   dest: "{module_path}/requirements.txt"
 - src: datacube.conf
   dest: "{module_path}/datacube.conf"
-- src: datacube-ensure-user.py
+- src: scripts/datacube-ensure-user.py
   dest: "{module_path}/bin/datacube-ensure-user.py"
+  chmod: 0o755
+- src: scripts/add-aws-vault
+  dest: "{module_path}/bin/add-aws-vault"
+  chmod: 0o755
+- src: scripts/login-aws-vault
+  dest: "{module_path}/bin/login-aws-vault"
+  chmod: 0o755
+
+wget_files:
+- src: https://github.com/99designs/aws-vault/releases/download/v6.3.1/aws-vault-linux-amd64
+  dest: "{module_path}/bin/aws-vault"
   chmod: 0o755
 
 template_files:

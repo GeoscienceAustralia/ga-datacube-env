@@ -207,6 +207,31 @@ def copy_files(copy_tasks, variables):
             dest.chmod(perms)
 
 
+def wget_files(wget_tasks, variables):
+    """
+    wget files from source to destination as per configuration settings in modulespec yaml file
+
+    :param wget_tasks: Tasks to download files with `wget`
+    :param variables: Configuration variables as per configuration settings in modulespec yaml file
+    :return:
+    """
+    for task in wget_tasks:
+        fill_templates_from_variables(task, variables)
+        src = Path(task["src"])
+        dest = Path(task["dest"])
+
+        LOG.info("Copying %s to %s", src, dest)
+        LOG.info("Ensuring parent dir %s exists", dest.parent)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+
+        run_command(f"wget -O {desc} {src}")
+
+        if "chmod" in task:
+            perms = int(task["chmod"], base=8)
+            LOG.info("Setting %s permissions to %s", dest, oct(perms))
+            dest.chmod(perms)
+
+
 def read_config(path):
     """
     Read the configuration file and return a dictionary of configuration variables
@@ -374,6 +399,7 @@ def main(config_path):
         install_pip_packages(config["install_pip_packages"], variables)
 
     copy_files(config.get("copy_files", []), variables)
+    wget_files(config.get("wget_files", []), variables)
     copy_and_fill_templates(config.get("template_files", []), variables)
 
     LOG.info("Run final commands on module")

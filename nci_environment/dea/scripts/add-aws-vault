@@ -1,0 +1,2 @@
+#!/bin/bash
+aws-vault --backend=file add $1
